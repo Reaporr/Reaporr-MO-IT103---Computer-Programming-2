@@ -1,0 +1,56 @@
+import tkinter as tk
+from tkinter import messagebox
+
+class GradeCalculator(tk.Tk):
+    def __init__(self):
+        super().__init__()
+        self.title("Grade Calculator")
+        self.geometry("300x200")
+
+        self.milestone1_grade = tk.StringVar()
+        self.milestone2_grade = tk.StringVar()
+        self.terminal_grade = tk.StringVar()
+
+        self.create_widgets()
+
+    def create_widgets(self):
+        tk.Label(self, text="Milestone 1 Grade:").pack()
+        milestone1_entry = tk.Entry(self, textvariable=self.milestone1_grade)
+        milestone1_entry.pack()
+
+        tk.Label(self, text="Milestone 2 Grade:").pack()
+        milestone2_entry = tk.Entry(self, textvariable=self.milestone2_grade)
+        milestone2_entry.pack()
+
+        tk.Label(self, text="Terminal Assessment Grade:").pack()
+        terminal_entry = tk.Entry(self, textvariable=self.terminal_grade)
+        terminal_entry.pack()
+
+        calculate_button = tk.Button(self, text="Calculate Final Grade", command=self.calculate_grade)
+        calculate_button.pack()
+
+    def calculate_grade(self):
+        try:
+            milestone1_grade = float(self.milestone1_grade.get())
+            milestone2_grade = float(self.milestone2_grade.get())
+            terminal_grade = float(self.terminal_grade.get())
+
+            if not 0 <= milestone1_grade <= 25:
+                raise ValueError("Milestone 1 grade should be between 0 and 25.")
+            if not 0 <= milestone2_grade <= 40:
+                raise ValueError("Milestone 2 grade should be between 0 and 40.")
+            if not 0 <= terminal_grade <= 35:
+                raise ValueError("Terminal Assessment grade should be between 0 and 35.")
+
+            final_grade = (milestone1_grade * 0.25) + (milestone2_grade * 0.40) + (terminal_grade * 0.35)
+
+            messagebox.showinfo("Final Grade", f"Your final grade is: {final_grade}")
+
+        except ValueError as e:
+            messagebox.showerror("Error", str(e))
+        except Exception as e:
+            messagebox.showerror("Error", f"An error occurred: {e}")
+
+if __name__ == "__main__":
+    app = GradeCalculator()
+    app.mainloop()
